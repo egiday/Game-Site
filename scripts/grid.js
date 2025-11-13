@@ -27,6 +27,7 @@ function createCard(game) {
   card.className = 'game-card';
   card.dataset.id = game.id;
   card.dataset.status = game.status;
+  card.tabIndex = -1;
 
   const header = document.createElement('header');
   header.innerHTML = `
@@ -70,6 +71,22 @@ function createCard(game) {
     iframe.dataset.src = `games/${game.id}/index.html`;
     previewWrap.appendChild(iframe);
     observer.observe(card);
+
+    // Click-through link to open full game page
+    const link = document.createElement('a');
+    link.className = 'card-link';
+    link.href = `games/${game.id}/index.html`;
+    link.setAttribute('aria-label', `Open ${game.title}`);
+    link.title = `Open ${game.title}`;
+    card.appendChild(link);
+
+    // Visible CTA for mouse/keyboard users
+    const cta = document.createElement('a');
+    cta.className = 'play-cta';
+    cta.href = link.href;
+    cta.textContent = 'Play';
+    cta.setAttribute('aria-label', `Play ${game.title}`);
+    card.appendChild(cta);
   }
   card.appendChild(previewWrap);
   return card;

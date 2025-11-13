@@ -140,3 +140,26 @@ body {
 ::-webkit-scrollbar-track { background:#0f1115; }
 ::-webkit-scrollbar-thumb { background:#232a33; border-radius:6px; }
 ::-webkit-scrollbar-thumb:hover { background:#2e3640; }
+
+/* Click-through overlay link (covers whole card without blocking focus order) */
+.card-link {
+  position:absolute; inset:0; z-index:3;
+  text-decoration:none; color:inherit;
+}
+
+/* Visible Play CTA */
+.play-cta {
+  position:absolute; z-index:4;
+  bottom:.85rem; right:.85rem;
+  padding:.45rem .7rem; font-size:.8rem; font-weight:600;
+  border-radius: var(--radius-s);
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  border:1px solid #1e40af;
+  color:white; text-decoration:none;
+  box-shadow: 0 6px 14px -6px rgba(37,99,235,.6);
+  transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+}
+.game-card:hover .play-cta { transform: translateY(-1px); box-shadow: 0 10px 22px -8px rgba(37,99,235,.75); }
+.play-cta:focus { outline:2px solid var(--accent); outline-offset:2px; }
+.game-card[data-status="placeholder"] .play-cta,
+.game-card[data-status="placeholder"] .card-link { display:none; }
