@@ -67,16 +67,16 @@
     "id": "game-09",
     "title": "Racing Dash",
     "genre": "Racing",
-    "description": "Placeholder slot.",
-    "status": "placeholder",
+    "description": "Fast-paced racing game! Dodge traffic and rack up points. Use arrow keys to steer.",
+    "status": "active",
     "thumbnail": "assets/thumbnails/game-09.svg"
   },
   {
     "id": "game-10",
     "title": "Platform Runner",
     "genre": "Platformer",
-    "description": "Placeholder slot.",
-    "status": "placeholder",
+    "description": "Jump across platforms and avoid obstacles! Press SPACE or up arrow to jump.",
+    "status": "active",
     "thumbnail": "assets/thumbnails/game-10.svg"
   },
   {
