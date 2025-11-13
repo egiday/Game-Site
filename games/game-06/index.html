@@ -1,1 +1,477 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>game-06</title></head><body style="margin:0;font-family:sans-serif;background:#161616;color:#eee;display:flex;align-items:center;justify-content:center;height:100vh;">game-06 placeholder</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Battler</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2d1b3d 0%, #4a1942 100%);
+      color: #fff;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 15px 20px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .turn-info {
+      margin-top: 5px;
+      font-size: 14px;
+      color: #ffd700;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      gap: 20px;
+    }
+    .battlefield {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .player-area {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      padding: 15px;
+      min-height: 120px;
+    }
+    .player-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .player-name {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .health-bar {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      height: 20px;
+      width: 200px;
+      overflow: hidden;
+    }
+    .health-fill {
+      background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+      height: 100%;
+      transition: width 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .health-fill.player {
+      background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+    }
+    .cards-in-play {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      min-height: 80px;
+    }
+    .hand {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 10px;
+      padding: 15px;
+      min-height: 180px;
+    }
+    .hand-title {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #ffd700;
+    }
+    .hand-cards {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .card {
+      width: 120px;
+      height: 160px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px;
+      padding: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 2px solid transparent;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+      border-color: #ffd700;
+    }
+    .card.selected {
+      border-color: #ffd700;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+    .card.enemy {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    }
+    .card.in-play {
+      cursor: default;
+      opacity: 0.8;
+    }
+    .card-name {
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    .card-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-top: auto;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-label {
+      font-size: 10px;
+      opacity: 0.8;
+    }
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .btn.attack {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    }
+    .btn.end-turn {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    }
+    .message {
+      background: rgba(255, 215, 0, 0.2);
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 14px;
+      margin-top: 10px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+    .game-over {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 1000;
+    }
+    .game-over h2 {
+      font-size: 48px;
+    }
+    .game-over.hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>⚔️ Card Battler</h1>
+    <div class="turn-info" id="turnInfo">Your Turn</div>
+  </header>
+  <main>
+    <div class="battlefield">
+      <div class="player-area">
+        <div class="player-info">
+          <span class="player-name">🤖 Enemy</span>
+          <div class="health-bar">
+            <div class="health-fill" id="enemyHealth" style="width: 100%">30 / 30</div>
+          </div>
+        </div>
+        <div class="cards-in-play" id="enemyCards"></div>
+      </div>
+      <div class="player-area">
+        <div class="player-info">
+          <span class="player-name">🧙 You</span>
+          <div class="health-bar">
+            <div class="health-fill player" id="playerHealth" style="width: 100%">30 / 30</div>
+          </div>
+        </div>
+        <div class="cards-in-play" id="playerCards"></div>
+      </div>
+    </div>
+    <div class="hand">
+      <div class="hand-title">Your Hand (Energy: <span id="energy">3</span>)</div>
+      <div class="hand-cards" id="hand"></div>
+    </div>
+    <div class="actions">
+      <button class="btn attack" id="attackBtn" disabled>⚔️ Attack</button>
+      <button class="btn end-turn" id="endTurnBtn">🔄 End Turn</button>
+    </div>
+    <div class="message" id="message" style="display: none;"></div>
+  </main>
+  <div class="game-over hidden" id="gameOver">
+    <h2 id="gameOverText">Victory!</h2>
+    <button class="btn" id="restartBtn">🔄 Play Again</button>
+  </div>
+  <script>
+    const cardTemplates = [
+      { name: 'Warrior', attack: 3, health: 4, cost: 2 },
+      { name: 'Mage', attack: 4, health: 2, cost: 2 },
+      { name: 'Tank', attack: 2, health: 6, cost: 3 },
+      { name: 'Archer', attack: 5, health: 3, cost: 3 },
+      { name: 'Healer', attack: 1, health: 5, cost: 2 },
+      { name: 'Knight', attack: 4, health: 4, cost: 3 },
+      { name: 'Rogue', attack: 6, health: 2, cost: 3 }
+    ];
+
+    let playerHealth = 30;
+    let enemyHealth = 30;
+    let energy = 3;
+    let maxEnergy = 3;
+    let playerHand = [];
+    let playerField = [];
+    let enemyField = [];
+    let selectedCard = null;
+    let isPlayerTurn = true;
+
+    const handEl = document.getElementById('hand');
+    const playerCardsEl = document.getElementById('playerCards');
+    const enemyCardsEl = document.getElementById('enemyCards');
+    const playerHealthEl = document.getElementById('playerHealth');
+    const enemyHealthEl = document.getElementById('enemyHealth');
+    const energyEl = document.getElementById('energy');
+    const attackBtn = document.getElementById('attackBtn');
+    const endTurnBtn = document.getElementById('endTurnBtn');
+    const messageEl = document.getElementById('message');
+    const turnInfoEl = document.getElementById('turnInfo');
+    const gameOverEl = document.getElementById('gameOver');
+    const gameOverTextEl = document.getElementById('gameOverText');
+    const restartBtn = document.getElementById('restartBtn');
+
+    function createCard(template) {
+      return { ...template, id: Math.random() };
+    }
+
+    function drawCard() {
+      if (playerHand.length >= 7) return;
+      const template = cardTemplates[Math.floor(Math.random() * cardTemplates.length)];
+      playerHand.push(createCard(template));
+      renderHand();
+    }
+
+    function renderHand() {
+      handEl.innerHTML = '';
+      playerHand.forEach((card, index) => {
+        const cardEl = createCardElement(card, false);
+        cardEl.addEventListener('click', () => playCard(index));
+        handEl.appendChild(cardEl);
+      });
+    }
+
+    function createCardElement(card, isEnemy = false, inPlay = false) {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'card' + (isEnemy ? ' enemy' : '') + (inPlay ? ' in-play' : '');
+      cardEl.innerHTML = `
+        <div class="card-name">${card.name}</div>
+        <div class="card-stats">
+          <div class="stat">
+            <div class="stat-label">ATK</div>
+            <div class="stat-value">⚔️${card.attack}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">HP</div>
+            <div class="stat-value">❤️${card.health}</div>
+          </div>
+        </div>
+        ${!inPlay ? `<div style="text-align:center;font-size:12px;margin-top:5px;">Cost: ${card.cost}</div>` : ''}
+      `;
+      return cardEl;
+    }
+
+    function playCard(index) {
+      if (!isPlayerTurn) return;
+      const card = playerHand[index];
+      if (energy < card.cost) {
+        showMessage('Not enough energy!');
+        return;
+      }
+      energy -= card.cost;
+      playerField.push(card);
+      playerHand.splice(index, 1);
+      renderHand();
+      renderField();
+      updateStats();
+      showMessage(`Played ${card.name}!`);
+    }
+
+    function renderField() {
+      playerCardsEl.innerHTML = '';
+      playerField.forEach(card => {
+        playerCardsEl.appendChild(createCardElement(card, false, true));
+      });
+
+      enemyCardsEl.innerHTML = '';
+      enemyField.forEach(card => {
+        enemyCardsEl.appendChild(createCardElement(card, true, true));
+      });
+
+      attackBtn.disabled = playerField.length === 0 || !isPlayerTurn;
+    }
+
+    function updateStats() {
+      playerHealthEl.textContent = `${playerHealth} / 30`;
+      playerHealthEl.style.width = `${(playerHealth / 30) * 100}%`;
+      
+      enemyHealthEl.textContent = `${enemyHealth} / 30`;
+      enemyHealthEl.style.width = `${(enemyHealth / 30) * 100}%`;
+      
+      energyEl.textContent = energy;
+    }
+
+    function showMessage(msg) {
+      messageEl.textContent = msg;
+      messageEl.style.display = 'block';
+      setTimeout(() => {
+        messageEl.style.display = 'none';
+      }, 2000);
+    }
+
+    attackBtn.addEventListener('click', () => {
+      if (!isPlayerTurn || playerField.length === 0) return;
+      
+      let totalDamage = 0;
+      playerField.forEach(card => {
+        totalDamage += card.attack;
+      });
+
+      enemyHealth -= totalDamage;
+      updateStats();
+      showMessage(`Dealt ${totalDamage} damage!`);
+
+      if (enemyHealth <= 0) {
+        endGame(true);
+        return;
+      }
+
+      attackBtn.disabled = true;
+    });
+
+    endTurnBtn.addEventListener('click', () => {
+      if (!isPlayerTurn) return;
+      endTurn();
+    });
+
+    function endTurn() {
+      isPlayerTurn = false;
+      turnInfoEl.textContent = 'Enemy Turn';
+      endTurnBtn.disabled = true;
+      
+      setTimeout(() => {
+        enemyTurn();
+      }, 1000);
+    }
+
+    function enemyTurn() {
+      // Enemy plays a card
+      const template = cardTemplates[Math.floor(Math.random() * cardTemplates.length)];
+      enemyField.push(createCard(template));
+      renderField();
+      
+      setTimeout(() => {
+        // Enemy attacks
+        let totalDamage = 0;
+        enemyField.forEach(card => {
+          totalDamage += card.attack;
+        });
+
+        if (totalDamage > 0) {
+          playerHealth -= totalDamage;
+          updateStats();
+          showMessage(`Enemy dealt ${totalDamage} damage!`);
+        }
+
+        if (playerHealth <= 0) {
+          endGame(false);
+          return;
+        }
+
+        setTimeout(() => {
+          startPlayerTurn();
+        }, 1000);
+      }, 1000);
+    }
+
+    function startPlayerTurn() {
+      isPlayerTurn = true;
+      turnInfoEl.textContent = 'Your Turn';
+      endTurnBtn.disabled = false;
+      energy = maxEnergy;
+      drawCard();
+      updateStats();
+      renderField();
+    }
+
+    function endGame(playerWon) {
+      gameOverTextEl.textContent = playerWon ? '🎉 Victory!' : '💀 Defeat!';
+      gameOverEl.classList.remove('hidden');
+    }
+
+    restartBtn.addEventListener('click', () => {
+      location.reload();
+    });
+
+    // Initialize game
+    for (let i = 0; i < 4; i++) {
+      drawCard();
+    }
+    renderHand();
+    updateStats();
+  </script>
+</body>
+</html>

@@ -35,16 +35,16 @@
     "id": "game-05",
     "title": "City Builder Lite",
     "genre": "Simulation",
-    "description": "Placeholder slot.",
-    "status": "placeholder",
+    "description": "Build your city with houses, shops, parks, and factories. Manage money, population, and happiness!",
+    "status": "active",
     "thumbnail": "assets/thumbnails/game-05.svg"
   },
   {
     "id": "game-06",
     "title": "Card Battler",
     "genre": "Card",
-    "description": "Placeholder slot.",
-    "status": "placeholder",
+    "description": "Strategic card battle game! Play cards, attack enemies, and defeat your opponent in turn-based combat.",
+    "status": "active",
     "thumbnail": "assets/thumbnails/game-06.svg"
   },
   {

@@ -1,1 +1,333 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>game-05</title></head><body style="margin:0;font-family:sans-serif;background:#151515;color:#eee;display:flex;align-items:center;justify-content:center;height:100vh;">game-05 placeholder</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>City Builder Lite</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: #fff;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+    }
+    .stats {
+      display: flex;
+      gap: 20px;
+    }
+    .stat {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 8px 15px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    .stat strong {
+      color: #ffd700;
+      margin-right: 5px;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+      overflow: hidden;
+    }
+    .grid-container {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      padding: 20px;
+      overflow: auto;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(10, 50px);
+      grid-template-rows: repeat(10, 50px);
+      gap: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      border-radius: 5px;
+      width: fit-content;
+      margin: 0 auto;
+    }
+    .cell {
+      width: 50px;
+      height: 50px;
+      background: #2d5016;
+      border: 1px solid #3a6b1e;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .cell:hover {
+      transform: scale(1.05);
+      border-color: #ffd700;
+    }
+    .cell.house {
+      background: #8b4513;
+    }
+    .cell.shop {
+      background: #4169e1;
+    }
+    .cell.park {
+      background: #228b22;
+    }
+    .cell.factory {
+      background: #696969;
+    }
+    .sidebar {
+      width: 250px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      padding-bottom: 5px;
+    }
+    .building-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .building-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    .building-btn:active {
+      transform: translateY(0);
+    }
+    .building-btn.selected {
+      box-shadow: 0 0 0 3px #ffd700;
+    }
+    .building-btn .cost {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .info {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .clear-btn {
+      background: #dc2626;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: auto;
+    }
+    .clear-btn:hover {
+      background: #b91c1c;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🏙️ City Builder Lite</h1>
+    <div class="stats">
+      <div class="stat"><strong>💰</strong><span id="money">1000</span></div>
+      <div class="stat"><strong>👥</strong><span id="population">0</span></div>
+      <div class="stat"><strong>😊</strong><span id="happiness">50</span>%</div>
+    </div>
+  </header>
+  <main>
+    <div class="grid-container">
+      <div class="grid" id="grid"></div>
+    </div>
+    <aside class="sidebar">
+      <h2>Buildings</h2>
+      <button class="building-btn" data-type="house" data-cost="100">
+        <span>🏠 House</span>
+        <span class="cost">$100</span>
+      </button>
+      <button class="building-btn" data-type="shop" data-cost="200">
+        <span>🏪 Shop</span>
+        <span class="cost">$200</span>
+      </button>
+      <button class="building-btn" data-type="park" data-cost="150">
+        <span>🌳 Park</span>
+        <span class="cost">$150</span>
+      </button>
+      <button class="building-btn" data-type="factory" data-cost="300">
+        <span>🏭 Factory</span>
+        <span class="cost">$300</span>
+      </button>
+      <div class="info">
+        <strong>How to Play:</strong><br>
+        • Click a building type<br>
+        • Click empty cells to build<br>
+        • Houses add population<br>
+        • Shops and parks boost happiness<br>
+        • Factories generate income
+      </div>
+      <button class="clear-btn" id="clearBtn">🗑️ Clear All</button>
+    </aside>
+  </main>
+  <script>
+    const GRID_SIZE = 10;
+    let money = 1000;
+    let population = 0;
+    let happiness = 50;
+    let selectedBuilding = null;
+    let buildings = {};
+
+    const grid = document.getElementById('grid');
+    const moneyEl = document.getElementById('money');
+    const populationEl = document.getElementById('population');
+    const happinessEl = document.getElementById('happiness');
+    const buildingBtns = document.querySelectorAll('.building-btn');
+    const clearBtn = document.getElementById('clearBtn');
+
+    // Initialize grid
+    for (let i = 0; i < GRID_SIZE * GRID_SIZE; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.dataset.index = i;
+      cell.addEventListener('click', handleCellClick);
+      grid.appendChild(cell);
+    }
+
+    // Building button handlers
+    buildingBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buildingBtns.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedBuilding = {
+          type: btn.dataset.type,
+          cost: parseInt(btn.dataset.cost)
+        };
+      });
+    });
+
+    // Cell click handler
+    function handleCellClick(e) {
+      if (!selectedBuilding) return;
+      const index = e.target.dataset.index;
+      
+      // Check if already built
+      if (buildings[index]) {
+        alert('Already built here!');
+        return;
+      }
+
+      // Check if enough money
+      if (money < selectedBuilding.cost) {
+        alert('Not enough money!');
+        return;
+      }
+
+      // Build
+      money -= selectedBuilding.cost;
+      buildings[index] = selectedBuilding.type;
+      e.target.classList.add(selectedBuilding.type);
+      
+      // Add emoji
+      const emojis = {
+        house: '🏠',
+        shop: '🏪',
+        park: '🌳',
+        factory: '🏭'
+      };
+      e.target.textContent = emojis[selectedBuilding.type];
+
+      updateStats();
+    }
+
+    // Clear all
+    clearBtn.addEventListener('click', () => {
+      if (confirm('Clear all buildings?')) {
+        buildings = {};
+        document.querySelectorAll('.cell').forEach(cell => {
+          cell.className = 'cell';
+          cell.textContent = '';
+        });
+        updateStats();
+      }
+    });
+
+    // Update statistics
+    function updateStats() {
+      const counts = {
+        house: 0,
+        shop: 0,
+        park: 0,
+        factory: 0
+      };
+
+      Object.values(buildings).forEach(type => {
+        counts[type]++;
+      });
+
+      population = counts.house * 4;
+      happiness = 50 + (counts.park * 5) + (counts.shop * 3) - (counts.factory * 2);
+      happiness = Math.max(0, Math.min(100, happiness));
+
+      moneyEl.textContent = money;
+      populationEl.textContent = population;
+      happinessEl.textContent = happiness;
+    }
+
+    // Income generation
+    setInterval(() => {
+      const counts = {
+        factory: 0,
+        shop: 0
+      };
+      Object.values(buildings).forEach(type => {
+        if (type === 'factory') counts.factory++;
+        if (type === 'shop') counts.shop++;
+      });
+      const income = counts.factory * 10 + counts.shop * 5;
+      money += income;
+      updateStats();
+    }, 5000);
+
+    // Initialize
+    updateStats();
+  </script>
+</body>
+</html>
