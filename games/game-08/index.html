@@ -1,1 +1,496 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>game-08</title></head><body style="margin:0;font-family:sans-serif;background:#181818;color:#eee;display:flex;align-items:center;justify-content:center;height:100vh;">game-08 placeholder</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Idle Miner</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #78350f 0%, #451a03 100%);
+      color: #fff;
+      overflow-x: hidden;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2.5em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .stat-card {
+      background: rgba(0,0,0,0.3);
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px solid #f59e0b;
+      text-align: center;
+    }
+    .stat-card h3 {
+      font-size: 0.9em;
+      color: #fbbf24;
+      margin-bottom: 10px;
+    }
+    .stat-value {
+      font-size: 2em;
+      font-weight: bold;
+      color: #fde047;
+    }
+    .mine-section {
+      background: rgba(0,0,0,0.4);
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      border: 3px solid #d97706;
+    }
+    .mine-visual {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .mine-icon {
+      font-size: 120px;
+      cursor: pointer;
+      transition: all 0.1s;
+      display: inline-block;
+      user-select: none;
+    }
+    .mine-icon:hover { transform: scale(1.1); }
+    .mine-icon:active { transform: scale(0.95); }
+    .click-effect {
+      position: absolute;
+      font-size: 24px;
+      font-weight: bold;
+      color: #fde047;
+      pointer-events: none;
+      animation: floatUp 1s ease-out forwards;
+    }
+    @keyframes floatUp {
+      to {
+        opacity: 0;
+        transform: translateY(-100px);
+      }
+    }
+    .upgrades {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .upgrade-card {
+      background: rgba(0,0,0,0.3);
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px solid #92400e;
+      transition: all 0.3s;
+    }
+    .upgrade-card:hover {
+      border-color: #f59e0b;
+      transform: translateY(-3px);
+    }
+    .upgrade-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .upgrade-name {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    .upgrade-level {
+      background: #92400e;
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 0.9em;
+    }
+    .upgrade-desc {
+      color: #d1d5db;
+      margin-bottom: 15px;
+      font-size: 0.9em;
+    }
+    .upgrade-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-size: 0.9em;
+    }
+    .upgrade-production {
+      color: #10b981;
+    }
+    .upgrade-cost {
+      color: #fbbf24;
+    }
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      border: none;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1em;
+      transition: all 0.2s;
+    }
+    button:hover {
+      background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+    }
+    button:active { transform: translateY(0); }
+    button:disabled {
+      background: #4b5563;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    .section-title {
+      font-size: 1.5em;
+      margin-bottom: 15px;
+      color: #fbbf24;
+      border-bottom: 2px solid #f59e0b;
+      padding-bottom: 10px;
+    }
+    .milestone {
+      background: rgba(16, 185, 129, 0.2);
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      border: 2px solid #10b981;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⛏️ Idle Miner ⛏️</h1>
+    
+    <div class="stats">
+      <div class="stat-card">
+        <h3>💎 Total Gold</h3>
+        <div class="stat-value" id="totalGold">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>⚡ Gold Per Second</h3>
+        <div class="stat-value" id="goldPerSec">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>👷 Total Miners</h3>
+        <div class="stat-value" id="totalMiners">0</div>
+      </div>
+    </div>
+
+    <div class="mine-section">
+      <div class="mine-visual">
+        <div class="mine-icon" id="mineButton">⛏️</div>
+        <div style="margin-top: 20px; font-size: 1.2em;">
+          Click to mine! <span style="color: #fbbf24;">+<span id="clickValue">1</span></span> gold per click
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">⬆️ Upgrades</div>
+    <div class="upgrades" id="upgradesContainer"></div>
+
+    <div class="milestone" id="milestone" style="display: none;"></div>
+  </div>
+
+  <script>
+    // Game state
+    const game = {
+      gold: 0,
+      clickPower: 1,
+      goldPerSecond: 0,
+      upgrades: []
+    };
+
+    // Upgrade definitions
+    const upgradeTypes = [
+      {
+        id: 'pickaxe',
+        name: '⛏️ Better Pickaxe',
+        desc: 'Increases gold per click',
+        baseCost: 10,
+        baseProduction: 1,
+        costMultiplier: 1.15,
+        level: 0,
+        type: 'click'
+      },
+      {
+        id: 'miner',
+        name: '👷 Hire Miner',
+        desc: 'Mines automatically',
+        baseCost: 50,
+        baseProduction: 1,
+        costMultiplier: 1.12,
+        level: 0,
+        type: 'auto'
+      },
+      {
+        id: 'drill',
+        name: '🔧 Mining Drill',
+        desc: 'Automated drilling machine',
+        baseCost: 200,
+        baseProduction: 5,
+        costMultiplier: 1.13,
+        level: 0,
+        type: 'auto'
+      },
+      {
+        id: 'excavator',
+        name: '🚜 Excavator',
+        desc: 'Heavy-duty mining equipment',
+        baseCost: 1000,
+        baseProduction: 25,
+        costMultiplier: 1.14,
+        level: 0,
+        type: 'auto'
+      },
+      {
+        id: 'quarry',
+        name: '🏭 Quarry',
+        desc: 'Industrial mining facility',
+        baseCost: 5000,
+        baseProduction: 100,
+        costMultiplier: 1.15,
+        level: 0,
+        type: 'auto'
+      },
+      {
+        id: 'supermine',
+        name: '🏗️ Super Mine',
+        desc: 'Massive mining operation',
+        baseCost: 25000,
+        baseProduction: 500,
+        costMultiplier: 1.16,
+        level: 0,
+        type: 'auto'
+      }
+    ];
+
+    game.upgrades = upgradeTypes.map(u => ({...u}));
+
+    function getCost(upgrade) {
+      return Math.floor(upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.level));
+    }
+
+    function getProduction(upgrade) {
+      if (upgrade.type === 'click') {
+        return upgrade.baseProduction * upgrade.level;
+      }
+      return upgrade.baseProduction * upgrade.level;
+    }
+
+    function calculateGoldPerSecond() {
+      let total = 0;
+      game.upgrades.forEach(upgrade => {
+        if (upgrade.type === 'auto') {
+          total += getProduction(upgrade);
+        }
+      });
+      game.goldPerSecond = total;
+    }
+
+    function calculateClickPower() {
+      let total = 1;
+      game.upgrades.forEach(upgrade => {
+        if (upgrade.type === 'click') {
+          total += getProduction(upgrade);
+        }
+      });
+      game.clickPower = total;
+    }
+
+    function buyUpgrade(upgradeId) {
+      const upgrade = game.upgrades.find(u => u.id === upgradeId);
+      const cost = getCost(upgrade);
+      
+      if (game.gold >= cost) {
+        game.gold -= cost;
+        upgrade.level++;
+        
+        if (upgrade.type === 'auto') {
+          calculateGoldPerSecond();
+        } else {
+          calculateClickPower();
+        }
+        
+        updateUI();
+        checkMilestones();
+      }
+    }
+
+    function formatNumber(num) {
+      if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
+      if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+      if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
+      return Math.floor(num).toString();
+    }
+
+    function updateUI() {
+      document.getElementById('totalGold').textContent = formatNumber(game.gold);
+      document.getElementById('goldPerSec').textContent = formatNumber(game.goldPerSecond);
+      document.getElementById('clickValue').textContent = game.clickPower;
+      
+      let totalMiners = 0;
+      game.upgrades.forEach(upgrade => {
+        if (upgrade.type === 'auto') {
+          totalMiners += upgrade.level;
+        }
+      });
+      document.getElementById('totalMiners').textContent = totalMiners;
+
+      // Update upgrade cards
+      game.upgrades.forEach(upgrade => {
+        const card = document.getElementById(`upgrade-${upgrade.id}`);
+        if (card) {
+          const cost = getCost(upgrade);
+          const production = getProduction(upgrade);
+          const canAfford = game.gold >= cost;
+          
+          card.querySelector('.upgrade-level').textContent = `Level ${upgrade.level}`;
+          card.querySelector('.upgrade-production').textContent = 
+            upgrade.type === 'click' ? 
+            `+${production} per click` : 
+            `+${production}/sec`;
+          card.querySelector('.upgrade-cost').textContent = `${formatNumber(cost)} gold`;
+          card.querySelector('button').disabled = !canAfford;
+        }
+      });
+    }
+
+    function createUpgradeCards() {
+      const container = document.getElementById('upgradesContainer');
+      game.upgrades.forEach(upgrade => {
+        const card = document.createElement('div');
+        card.className = 'upgrade-card';
+        card.id = `upgrade-${upgrade.id}`;
+        card.innerHTML = `
+          <div class="upgrade-header">
+            <div class="upgrade-name">${upgrade.name}</div>
+            <div class="upgrade-level">Level 0</div>
+          </div>
+          <div class="upgrade-desc">${upgrade.desc}</div>
+          <div class="upgrade-stats">
+            <div class="upgrade-production">+0/sec</div>
+            <div class="upgrade-cost">0 gold</div>
+          </div>
+          <button onclick="buyUpgrade('${upgrade.id}')">Buy</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function showClickEffect(x, y, amount) {
+      const effect = document.createElement('div');
+      effect.className = 'click-effect';
+      effect.textContent = `+${amount}`;
+      effect.style.left = x + 'px';
+      effect.style.top = y + 'px';
+      document.body.appendChild(effect);
+      setTimeout(() => effect.remove(), 1000);
+    }
+
+    function checkMilestones() {
+      const milestoneDiv = document.getElementById('milestone');
+      let message = '';
+
+      if (game.gold >= 100000 && !game.milestone100k) {
+        game.milestone100k = true;
+        message = '🎉 Milestone: 100K Gold! You\'re a mining tycoon!';
+      } else if (game.goldPerSecond >= 1000 && !game.milestone1kps) {
+        game.milestone1kps = true;
+        message = '⚡ Milestone: 1000 Gold/sec! The mine is booming!';
+      }
+
+      if (message) {
+        milestoneDiv.textContent = message;
+        milestoneDiv.style.display = 'block';
+        setTimeout(() => {
+          milestoneDiv.style.display = 'none';
+        }, 5000);
+      }
+    }
+
+    // Event listeners
+    document.getElementById('mineButton').addEventListener('click', (e) => {
+      game.gold += game.clickPower;
+      showClickEffect(e.pageX, e.pageY, game.clickPower);
+      updateUI();
+      checkMilestones();
+    });
+
+    // Game loop
+    let lastUpdate = Date.now();
+    function gameLoop() {
+      const now = Date.now();
+      const delta = (now - lastUpdate) / 1000;
+      lastUpdate = now;
+
+      // Add passive gold
+      game.gold += game.goldPerSecond * delta;
+      updateUI();
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Initialize
+    createUpgradeCards();
+    updateUI();
+    gameLoop();
+
+    // Auto-save (with error handling for sandboxed iframe)
+    function saveGame() {
+      try {
+        localStorage.setItem('idleMinerSave', JSON.stringify(game));
+      } catch (e) {
+        // localStorage not available in sandboxed iframe
+      }
+    }
+
+    function loadGame() {
+      try {
+        const saved = localStorage.getItem('idleMinerSave');
+        if (saved) {
+          const savedGame = JSON.parse(saved);
+          game.gold = savedGame.gold || 0;
+          game.clickPower = savedGame.clickPower || 1;
+          game.goldPerSecond = savedGame.goldPerSecond || 0;
+          
+          if (savedGame.upgrades) {
+            savedGame.upgrades.forEach((savedUpgrade, i) => {
+              game.upgrades[i].level = savedUpgrade.level || 0;
+            });
+          }
+          
+          calculateGoldPerSecond();
+          calculateClickPower();
+        }
+      } catch (e) {
+        // localStorage not available in sandboxed iframe
+      }
+    }
+
+    // Load on start
+    loadGame();
+    updateUI();
+
+    // Auto-save every 5 seconds
+    setInterval(saveGame, 5000);
+
+    // Save on page unload
+    window.addEventListener('beforeunload', saveGame);
+  </script>
+</body>
+</html>
