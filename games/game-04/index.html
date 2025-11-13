@@ -1,1 +1,364 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>game-04</title></head><body style="margin:0;font-family:sans-serif;background:#141414;color:#eee;display:flex;align-items:center;justify-content:center;height:100vh;">game-04 placeholder</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Puzzle Forge</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    #game-container {
+      max-width: 500px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 28px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    #stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 10px;
+    }
+    .stat {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 10px 15px;
+      border-radius: 10px;
+      flex: 1;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .stat-label {
+      font-size: 11px;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .stat-value {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    #puzzle-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .tile {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      border: none;
+      border-radius: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tile:hover:not(.empty) {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    .tile:active:not(.empty) {
+      transform: scale(0.95);
+    }
+    .tile.empty {
+      background: rgba(255, 255, 255, 0.1);
+      cursor: default;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .tile.correct {
+      background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+    }
+    #message {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      min-height: 50px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    button {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: bold;
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    .victory {
+      color: #84fab0;
+      font-weight: bold;
+      font-size: 18px;
+      animation: pulse 1s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <h1>🧩 Puzzle Forge 🧩</h1>
+    <div id="stats">
+      <div class="stat">
+        <div class="stat-label">Moves</div>
+        <div class="stat-value" id="moves">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Best</div>
+        <div class="stat-value" id="best">-</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Puzzles</div>
+        <div class="stat-value" id="solved">0</div>
+      </div>
+    </div>
+    <div id="message">Slide tiles to arrange them in order from 1 to 15!</div>
+    <div id="puzzle-board"></div>
+    <div id="controls">
+      <button onclick="shufflePuzzle()">Shuffle</button>
+      <button onclick="newPuzzle()">New Puzzle</button>
+    </div>
+  </div>
+
+  <script>
+    const BOARD_SIZE = 4;
+    let tiles = [];
+    let emptyPos = { x: 3, y: 3 };
+    let moves = 0;
+    let bestMoves = localStorage.getItem('puzzleForge_best') || null;
+    let solvedCount = parseInt(localStorage.getItem('puzzleForge_solved')) || 0;
+    let gameActive = false;
+
+    function createBoard() {
+      tiles = [];
+      for (let i = 0; i < BOARD_SIZE * BOARD_SIZE - 1; i++) {
+        tiles.push(i + 1);
+      }
+      tiles.push(0); // Empty tile
+      emptyPos = { x: 3, y: 3 };
+    }
+
+    function render() {
+      const board = document.getElementById('puzzle-board');
+      board.innerHTML = '';
+      
+      for (let i = 0; i < tiles.length; i++) {
+        const tile = document.createElement('button');
+        tile.className = 'tile';
+        const value = tiles[i];
+        
+        if (value === 0) {
+          tile.classList.add('empty');
+        } else {
+          tile.textContent = value;
+          
+          // Check if tile is in correct position
+          if (value === i + 1) {
+            tile.classList.add('correct');
+          }
+          
+          tile.addEventListener('click', () => handleTileClick(i));
+        }
+        
+        board.appendChild(tile);
+      }
+      
+      updateStats();
+    }
+
+    function handleTileClick(index) {
+      if (!gameActive) return;
+      
+      const x = index % BOARD_SIZE;
+      const y = Math.floor(index / BOARD_SIZE);
+      
+      // Check if tile is adjacent to empty space
+      const dx = Math.abs(x - emptyPos.x);
+      const dy = Math.abs(y - emptyPos.y);
+      
+      if ((dx === 1 && dy === 0) || (dx === 0 && dy === 1)) {
+        // Swap tile with empty space
+        const emptyIndex = emptyPos.y * BOARD_SIZE + emptyPos.x;
+        [tiles[index], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[index]];
+        emptyPos = { x, y };
+        moves++;
+        
+        render();
+        
+        if (isSolved()) {
+          handleWin();
+        }
+      }
+    }
+
+    function isSolved() {
+      for (let i = 0; i < tiles.length - 1; i++) {
+        if (tiles[i] !== i + 1) return false;
+      }
+      return tiles[tiles.length - 1] === 0;
+    }
+
+    function handleWin() {
+      gameActive = false;
+      solvedCount++;
+      localStorage.setItem('puzzleForge_solved', solvedCount);
+      
+      if (bestMoves === null || moves < bestMoves) {
+        bestMoves = moves;
+        localStorage.setItem('puzzleForge_best', bestMoves);
+        showMessage(`<span class="victory">🎉 Solved in ${moves} moves! New best record!</span>`);
+      } else {
+        showMessage(`<span class="victory">🎉 Puzzle solved in ${moves} moves!</span>`);
+      }
+      
+      updateStats();
+    }
+
+    function shufflePuzzle() {
+      moves = 0;
+      gameActive = true;
+      
+      // Perform random valid moves to ensure solvability
+      const shuffleMoves = 100 + Math.floor(Math.random() * 100);
+      
+      for (let i = 0; i < shuffleMoves; i++) {
+        const possibleMoves = [];
+        
+        // Find all tiles adjacent to empty space
+        if (emptyPos.x > 0) possibleMoves.push({ x: emptyPos.x - 1, y: emptyPos.y });
+        if (emptyPos.x < BOARD_SIZE - 1) possibleMoves.push({ x: emptyPos.x + 1, y: emptyPos.y });
+        if (emptyPos.y > 0) possibleMoves.push({ x: emptyPos.x, y: emptyPos.y - 1 });
+        if (emptyPos.y < BOARD_SIZE - 1) possibleMoves.push({ x: emptyPos.x, y: emptyPos.y + 1 });
+        
+        // Pick a random adjacent tile and swap
+        const move = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+        const moveIndex = move.y * BOARD_SIZE + move.x;
+        const emptyIndex = emptyPos.y * BOARD_SIZE + emptyPos.x;
+        
+        [tiles[moveIndex], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[moveIndex]];
+        emptyPos = move;
+      }
+      
+      // Make sure it's not already solved after shuffling
+      if (isSolved()) {
+        shufflePuzzle();
+        return;
+      }
+      
+      showMessage("Puzzle shuffled! Arrange the tiles in order.");
+      render();
+    }
+
+    function newPuzzle() {
+      createBoard();
+      shufflePuzzle();
+    }
+
+    function showMessage(msg) {
+      document.getElementById('message').innerHTML = msg;
+    }
+
+    function updateStats() {
+      document.getElementById('moves').textContent = moves;
+      document.getElementById('best').textContent = bestMoves !== null ? bestMoves : '-';
+      document.getElementById('solved').textContent = solvedCount;
+    }
+
+    // Keyboard controls
+    document.addEventListener('keydown', (e) => {
+      if (!gameActive) return;
+      
+      const emptyIndex = emptyPos.y * BOARD_SIZE + emptyPos.x;
+      let targetIndex = -1;
+      
+      switch(e.key) {
+        case 'ArrowUp':
+          e.preventDefault();
+          if (emptyPos.y < BOARD_SIZE - 1) {
+            targetIndex = (emptyPos.y + 1) * BOARD_SIZE + emptyPos.x;
+          }
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          if (emptyPos.y > 0) {
+            targetIndex = (emptyPos.y - 1) * BOARD_SIZE + emptyPos.x;
+          }
+          break;
+        case 'ArrowLeft':
+          e.preventDefault();
+          if (emptyPos.x < BOARD_SIZE - 1) {
+            targetIndex = emptyPos.y * BOARD_SIZE + (emptyPos.x + 1);
+          }
+          break;
+        case 'ArrowRight':
+          e.preventDefault();
+          if (emptyPos.x > 0) {
+            targetIndex = emptyPos.y * BOARD_SIZE + (emptyPos.x - 1);
+          }
+          break;
+      }
+      
+      if (targetIndex !== -1) {
+        handleTileClick(targetIndex);
+      }
+    });
+
+    // Initialize game
+    updateStats();
+    createBoard();
+    shufflePuzzle();
+  </script>
+</body>
+</html>

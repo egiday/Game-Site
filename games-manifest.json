@@ -19,16 +19,16 @@
     "id": "game-03",
     "title": "Dungeon Crawler",
     "genre": "RPG",
-    "description": "Placeholder slot.",
-    "status": "placeholder",
+    "description": "Explore procedurally generated dungeons, fight enemies, collect gold, and find the exit to advance through levels.",
+    "status": "active",
     "thumbnail": "assets/thumbnails/game-03.svg"
   },
   {
     "id": "game-04",
     "title": "Puzzle Forge",
     "genre": "Puzzle",
-    "description": "Placeholder slot.",
-    "status": "placeholder",
+    "description": "Classic 15-puzzle sliding tile game. Arrange numbered tiles in order by sliding them into the empty space.",
+    "status": "active",
     "thumbnail": "assets/thumbnails/game-04.svg"
   },
   {
