@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Game Hub</title>
+  <link rel="stylesheet" href="styles/theme.css" />
+  <link rel="preload" href="assets/placeholder.png" as="image" />
+  <meta name="color-scheme" content="dark" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>Game Hub</h1>
+    <div class="search-wrap">
+      <input id="search" type="search" placeholder="Search games... (title, genre, description)" autocomplete="off" />
+      <button id="clearSearch" aria-label="Clear search">×</button>
+    </div>
+  </header>
+  <main>
+    <section id="gamesGrid" class="games-grid" aria-live="polite"></section>
+  </main>
+  <footer class="site-footer">
+    <p>Drop game code into a folder in <code>games/</code> & run <code>npm run refresh-games</code>.</p>
+  </footer>
+  <script src="scripts/manifest-loader.js" type="module"></script>
+  <script src="scripts/grid.js" type="module"></script>
+  <script src="scripts/search.js" type="module"></script>
+</body>
+</html>
