@@ -1,22 +1,162 @@
 [
-  { "id": "game-01", "title": "Tycoon Prototype 1", "genre": "Tycoon", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-02", "title": "Space Trader", "genre": "Strategy", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-03", "title": "Dungeon Crawler", "genre": "RPG", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-04", "title": "Puzzle Forge", "genre": "Puzzle", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-05", "title": "City Builder Lite", "genre": "Simulation", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-06", "title": "Card Battler", "genre": "Card", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-07", "title": "Tower Defense", "genre": "Strategy", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-08", "title": "Idle Miner", "genre": "Idle", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-09", "title": "Racing Dash", "genre": "Racing", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-10", "title": "Platform Runner", "genre": "Platformer", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-11", "title": "Galaxy Explorer", "genre": "Adventure", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-12", "title": "Strategy Grid", "genre": "Strategy", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-13", "title": "Mystery Detective", "genre": "Adventure", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-14", "title": "Farm Manager", "genre": "Simulation", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-15", "title": "Arena Combat", "genre": "Action", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-16", "title": "Crafting Colony", "genre": "Tycoon", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-17", "title": "Logic Gates", "genre": "Puzzle", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-18", "title": "Survival Island", "genre": "Survival", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-19", "title": "Tactical Ops", "genre": "Tactics", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" },
-  { "id": "game-20", "title": "Physics Sandbox", "genre": "Sandbox", "description": "Placeholder slot.", "status": "placeholder", "thumbnail": "assets/placeholder.png" }
+  {
+    "id": "game-01",
+    "title": "Tycoon Prototype 1",
+    "genre": "Tycoon",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-01.svg"
+  },
+  {
+    "id": "game-02",
+    "title": "Space Trader",
+    "genre": "Strategy",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-02.svg"
+  },
+  {
+    "id": "game-03",
+    "title": "Dungeon Crawler",
+    "genre": "RPG",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-03.svg"
+  },
+  {
+    "id": "game-04",
+    "title": "Puzzle Forge",
+    "genre": "Puzzle",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-04.svg"
+  },
+  {
+    "id": "game-05",
+    "title": "City Builder Lite",
+    "genre": "Simulation",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-05.svg"
+  },
+  {
+    "id": "game-06",
+    "title": "Card Battler",
+    "genre": "Card",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-06.svg"
+  },
+  {
+    "id": "game-07",
+    "title": "Tower Defense",
+    "genre": "Strategy",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-07.svg"
+  },
+  {
+    "id": "game-08",
+    "title": "Idle Miner",
+    "genre": "Idle",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-08.svg"
+  },
+  {
+    "id": "game-09",
+    "title": "Racing Dash",
+    "genre": "Racing",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-09.svg"
+  },
+  {
+    "id": "game-10",
+    "title": "Platform Runner",
+    "genre": "Platformer",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-10.svg"
+  },
+  {
+    "id": "game-11",
+    "title": "Galaxy Explorer",
+    "genre": "Adventure",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-11.svg"
+  },
+  {
+    "id": "game-12",
+    "title": "Strategy Grid",
+    "genre": "Strategy",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-12.svg"
+  },
+  {
+    "id": "game-13",
+    "title": "Mystery Detective",
+    "genre": "Adventure",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-13.svg"
+  },
+  {
+    "id": "game-14",
+    "title": "Farm Manager",
+    "genre": "Simulation",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-14.svg"
+  },
+  {
+    "id": "game-15",
+    "title": "Arena Combat",
+    "genre": "Action",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-15.svg"
+  },
+  {
+    "id": "game-16",
+    "title": "Crafting Colony",
+    "genre": "Tycoon",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-16.svg"
+  },
+  {
+    "id": "game-17",
+    "title": "Logic Gates",
+    "genre": "Puzzle",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-17.svg"
+  },
+  {
+    "id": "game-18",
+    "title": "Survival Island",
+    "genre": "Survival",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-18.svg"
+  },
+  {
+    "id": "game-19",
+    "title": "Tactical Ops",
+    "genre": "Tactics",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-19.svg"
+  },
+  {
+    "id": "game-20",
+    "title": "Physics Sandbox",
+    "genre": "Sandbox",
+    "description": "Placeholder slot.",
+    "status": "placeholder",
+    "thumbnail": "assets/thumbnails/game-20.svg"
+  }
 ]
