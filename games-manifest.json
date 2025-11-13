@@ -3,16 +3,16 @@
     "id": "game-01",
     "title": "Tycoon Prototype 1",
     "genre": "Tycoon",
-    "description": "Placeholder slot.",
-    "status": "placeholder",
+    "description": "Build your business empire! Click to earn money and buy upgrades to automate your income.",
+    "status": "active",
     "thumbnail": "assets/thumbnails/game-01.svg"
   },
   {
     "id": "game-02",
     "title": "Space Trader",
     "genre": "Strategy",
-    "description": "Placeholder slot.",
-    "status": "placeholder",
+    "description": "Navigate the galaxy and trade commodities between planets to build your fortune!",
+    "status": "active",
     "thumbnail": "assets/thumbnails/game-02.svg"
   },
   {

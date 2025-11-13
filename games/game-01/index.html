@@ -1,1 +1,268 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>game-01</title></head><body style="margin:0;font-family:sans-serif;background:#111;color:#eee;display:flex;align-items:center;justify-content:center;height:100vh;">game-01 placeholder</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tycoon Prototype 1</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      color: #fff;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    .subtitle {
+      font-size: 1.2em;
+      opacity: 0.9;
+      margin-bottom: 30px;
+    }
+    .stats {
+      background: rgba(255,255,255,0.1);
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      min-width: 350px;
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 0;
+      font-size: 1.3em;
+    }
+    .stat-label {
+      font-weight: 600;
+      color: #fbbf24;
+    }
+    .stat-value {
+      font-weight: bold;
+      font-size: 1.4em;
+    }
+    #clickBtn {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      color: white;
+      border: none;
+      padding: 30px 60px;
+      font-size: 1.8em;
+      font-weight: bold;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transition: all 0.2s;
+      margin-bottom: 30px;
+    }
+    #clickBtn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
+    #clickBtn:active {
+      transform: translateY(0);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+    .upgrades {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+      width: 100%;
+      max-width: 900px;
+    }
+    .upgrade {
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      transition: all 0.2s;
+    }
+    .upgrade:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+    .upgrade h3 {
+      font-size: 1.3em;
+      margin-bottom: 8px;
+      color: #fbbf24;
+    }
+    .upgrade p {
+      margin: 8px 0;
+      opacity: 0.9;
+    }
+    .upgrade button {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1em;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+      transition: all 0.2s;
+    }
+    .upgrade button:hover:not(:disabled) {
+      background: #059669;
+      transform: translateY(-1px);
+    }
+    .upgrade button:disabled {
+      background: #6b7280;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    .upgrade-count {
+      font-weight: bold;
+      color: #60a5fa;
+    }
+  </style>
+</head>
+<body>
+  <h1>💼 Business Tycoon</h1>
+  <p class="subtitle">Build your empire one click at a time!</p>
+  
+  <div class="stats">
+    <div class="stat-row">
+      <span class="stat-label">💰 Money:</span>
+      <span class="stat-value">$<span id="money">0</span></span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">📈 Per Click:</span>
+      <span class="stat-value">$<span id="perClick">1</span></span>
+    </div>
+    <div class="stat-row">
+      <span class="stat-label">⚡ Per Second:</span>
+      <span class="stat-value">$<span id="perSecond">0</span></span>
+    </div>
+  </div>
+
+  <button id="clickBtn">💵 Earn Money 💵</button>
+
+  <div class="upgrades">
+    <div class="upgrade">
+      <h3>🖱️ Better Mouse</h3>
+      <p>Earn +1 per click</p>
+      <p>Cost: $<span class="cost" id="cost0">10</span></p>
+      <p>Owned: <span class="upgrade-count" id="count0">0</span></p>
+      <button onclick="buyUpgrade(0)">Buy</button>
+    </div>
+    
+    <div class="upgrade">
+      <h3>👨‍💼 Intern</h3>
+      <p>Earn +1 per second</p>
+      <p>Cost: $<span class="cost" id="cost1">50</span></p>
+      <p>Owned: <span class="upgrade-count" id="count1">0</span></p>
+      <button onclick="buyUpgrade(1)">Buy</button>
+    </div>
+    
+    <div class="upgrade">
+      <h3>💻 Computer</h3>
+      <p>Earn +5 per second</p>
+      <p>Cost: $<span class="cost" id="cost2">200</span></p>
+      <p>Owned: <span class="upgrade-count" id="count2">0</span></p>
+      <button onclick="buyUpgrade(2)">Buy</button>
+    </div>
+    
+    <div class="upgrade">
+      <h3>🏢 Office</h3>
+      <p>Earn +20 per second</p>
+      <p>Cost: $<span class="cost" id="cost3">1000</span></p>
+      <p>Owned: <span class="upgrade-count" id="count3">0</span></p>
+      <button onclick="buyUpgrade(3)">Buy</button>
+    </div>
+    
+    <div class="upgrade">
+      <h3>🏭 Factory</h3>
+      <p>Earn +100 per second</p>
+      <p>Cost: $<span class="cost" id="cost4">5000</span></p>
+      <p>Owned: <span class="upgrade-count" id="count4">0</span></p>
+      <button onclick="buyUpgrade(4)">Buy</button>
+    </div>
+    
+    <div class="upgrade">
+      <h3>🌍 Corporation</h3>
+      <p>Earn +500 per second</p>
+      <p>Cost: $<span class="cost" id="cost5">25000</span></p>
+      <p>Owned: <span class="upgrade-count" id="count5">0</span></p>
+      <button onclick="buyUpgrade(5)">Buy</button>
+    </div>
+  </div>
+
+  <script>
+    let money = 0;
+    let clickPower = 1;
+    let incomePerSecond = 0;
+
+    const upgrades = [
+      { name: 'Better Mouse', baseCost: 10, owned: 0, clickBonus: 1, passiveBonus: 0 },
+      { name: 'Intern', baseCost: 50, owned: 0, clickBonus: 0, passiveBonus: 1 },
+      { name: 'Computer', baseCost: 200, owned: 0, clickBonus: 0, passiveBonus: 5 },
+      { name: 'Office', baseCost: 1000, owned: 0, clickBonus: 0, passiveBonus: 20 },
+      { name: 'Factory', baseCost: 5000, owned: 0, clickBonus: 0, passiveBonus: 100 },
+      { name: 'Corporation', baseCost: 25000, owned: 0, clickBonus: 0, passiveBonus: 500 }
+    ];
+
+    function getCost(upgradeIndex) {
+      const upgrade = upgrades[upgradeIndex];
+      return Math.floor(upgrade.baseCost * Math.pow(1.15, upgrade.owned));
+    }
+
+    function updateDisplay() {
+      document.getElementById('money').textContent = Math.floor(money).toLocaleString();
+      document.getElementById('perClick').textContent = clickPower.toLocaleString();
+      document.getElementById('perSecond').textContent = incomePerSecond.toLocaleString();
+
+      upgrades.forEach((upgrade, i) => {
+        const cost = getCost(i);
+        document.getElementById(`cost${i}`).textContent = cost.toLocaleString();
+        document.getElementById(`count${i}`).textContent = upgrade.owned.toLocaleString();
+        
+        const btn = document.querySelectorAll('.upgrade button')[i];
+        btn.disabled = money < cost;
+      });
+    }
+
+    function buyUpgrade(index) {
+      const cost = getCost(index);
+      if (money >= cost) {
+        money -= cost;
+        upgrades[index].owned++;
+        
+        if (upgrades[index].clickBonus > 0) {
+          clickPower += upgrades[index].clickBonus;
+        }
+        if (upgrades[index].passiveBonus > 0) {
+          incomePerSecond += upgrades[index].passiveBonus;
+        }
+        
+        updateDisplay();
+      }
+    }
+
+    document.getElementById('clickBtn').addEventListener('click', () => {
+      money += clickPower;
+      updateDisplay();
+    });
+
+    // Passive income
+    setInterval(() => {
+      if (incomePerSecond > 0) {
+        money += incomePerSecond / 10;
+        updateDisplay();
+      }
+    }, 100);
+
+    updateDisplay();
+  </script>
+</body>
+</html>
