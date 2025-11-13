@@ -51,16 +51,16 @@
     "id": "game-07",
     "title": "Tower Defense",
     "genre": "Strategy",
-    "description": "Placeholder slot.",
-    "status": "placeholder",
+    "description": "Defend your base by strategically placing towers along the enemy path. Survive 15 waves to win!",
+    "status": "active",
     "thumbnail": "assets/thumbnails/game-07.svg"
   },
   {
     "id": "game-08",
     "title": "Idle Miner",
     "genre": "Idle",
-    "description": "Placeholder slot.",
-    "status": "placeholder",
+    "description": "Click to mine gold and build a mining empire! Hire miners, buy upgrades, and watch your profits grow automatically.",
+    "status": "active",
     "thumbnail": "assets/thumbnails/game-08.svg"
   },
   {
